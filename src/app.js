@@ -52,24 +52,31 @@ const App = React.createClass({
   },
   addMember (person) {
     return (e) => {
-    person = e.target.value
-    const newState = this.state.members.push(person)
-    this.setState({newState})
-    // I get a person with e.target.value
-    // I remove the person from the person's array
-    // I add the person to the members array
-  }
+      // get member list
+      // make sure the person is not in list
+      // add the person to the list
+      let members = this.state.members.filter(member =>
+          member.id !== person.id)
+        this.setState({members: [person, ...members]})
+      }
+  },
+  removeMember (m) {
+    return (e) => {
+      let members = this.state.members.filter(member => member.id !== m.id )
+      this.setState({members})
+    }
   },
   render() {
     return (
       <div>
         <div style={{float: 'left'}}>
           <h3>People</h3>
+
           <ul>
             {this.state.persons.map(p =>
               <li key={p.id}>
                 {p.name}
-                <button onClick={this.addMember}>Add Member</button>
+                <button onClick={this.addMember(p)}>Add Member</button>
               </li>
             )}
           </ul>
@@ -81,7 +88,7 @@ const App = React.createClass({
               {this.state.members.map(m =>
                 <li key={m.id}>
                   {m.name}
-                  <button>Remove</button>
+                  <button onClick={this.removeMember(m)}>Remove</button>
                 </li>
               )}
             </ul>
